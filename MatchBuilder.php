@@ -47,6 +47,7 @@ class MatchBuilder extends Object
         'PARAGRAPH' => 'buildMultipleMatch',
         'ZONE' => 'buildZoneMatch',
         'ZONESPAN' => 'buildZoneMatch',
+        'QUORUM' => 'buildQuorumMatch',
     ];
     /**
      * @var array map of MATCH operators.
@@ -338,5 +339,23 @@ class MatchBuilder extends Object
         }
 
         return $expression;
+    }
+
+    /**
+     * Create QUORUM expressions
+     * @param string $operator the operator which is used for Create Match expressions
+     * @param array $operands the Match expressions
+     * @param array &$params the expression parameters to be populated
+     * @return string the MATCH expression
+     */
+    public function buildQuorumMatch($operator, $operands, &$params)
+    {
+        if (!isset($operands[0], $operands[1], $operands[2])) {
+            throw new InvalidParamException("Operator '$operator' requires three operands.");
+        }
+
+        list($column, $value, $quorum) = $operands;
+
+        return $this->buildMatchColumn($column) . ' ' . $this->buildMatchValue($value, $params) . '/' . (int) $quorum;
     }
 }
