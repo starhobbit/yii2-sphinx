@@ -76,6 +76,7 @@ class Schema extends Object
         'bool' => self::TYPE_BOOLEAN,
         'float' => self::TYPE_FLOAT,
         'mva' => self::TYPE_INTEGER,
+        'mva64' => self::TYPE_INTEGER,
     ];
 
     /**
@@ -534,7 +535,7 @@ class Schema extends Object
         $column->isField = ($type == 'field');
         $column->isAttribute = !$column->isField;
 
-        $column->isMva = ($type == 'mva');
+        $column->isMva = ($type == 'mva' || $type == 'mva64');
 
         $column->phpType = $this->getColumnPhpType($column);
 
